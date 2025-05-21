@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Νέα Θέση (Εταιρία)</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #e9ecef;
+          color: #333;
+        }
+
+        .main-container {
+          max-width: 700px;
+          margin: 80px auto 40px auto;
+          padding: 20px 30px;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+          color: #0d47a1;
+          text-align: center;
+          margin-bottom: 25px;
+        }
+
+        label {
+          display: block;
+          margin-top: 15px;
+          font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+          width: 100%;
+          padding: 10px;
+          font-size: 14px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          margin-top: 5px;
+        }
+
+        textarea {
+          resize: vertical;
+        }
+
+        button {
+          background-color: #1565c0;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          margin-top: 25px;
+          width: 100%;
+        }
+
+        button:hover {
+          opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="main-container">
+    <h1>Ανακοίνωση Νέας Θέσης</h1>
+
+    <form th:action="@{/company/positions/new}" method="post" th:object="${position}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <label for="description">Περιγραφή:</label>
+        <textarea th:field="*{description}" id="description" rows="3"
+                  placeholder="Περιγράψτε τη θέση..." required></textarea>
+
+        <label for="startDate">Ημερομηνία Έναρξης:</label>
+        <input type="date" th:field="*{startDate}" id="startDate" required/>
+
+        <label for="endDate">Ημερομηνία Λήξης:</label>
+        <input type="date" th:field="*{endDate}" id="endDate" required/>
+
+        <label for="skills">Required Skills (κόμμα-χωριστά):</label>
+        <input type="text" name="requiredSkills" id="skills"
+               th:value="${#lists.isEmpty(position.requiredSkills) ? '' : #strings.listJoin(position.requiredSkills, ',')}"/>
+
+        <label for="topics">Topics (κόμμα-χωριστά):</label>
+        <input type="text" name="topics" id="topics"
+               th:value="${#lists.isEmpty(position.topics) ? '' : #strings.listJoin(position.topics, ',')}"/>
+
+        <button type="submit">Ανακοίνωση</button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+
+  <meta charset="UTF-8"/>
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      color: #333;
+    }
+
+    .header-title {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #0d47a1;
+    }
+
+    .main-container {
+      max-width: 700px;
+      margin: 20px auto 40px auto;
+      padding: 20px 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h1 {
+      color: #0d47a1;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #0d47a1;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: #1565c0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .info-section {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      padding: 20px 30px;
+      text-align: left;
+    }
+
+    ul {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Κεντρικός τίτλος -->
+<div class="header-title">Traineeship Management</div>
+
+<!-- Κεντρικό κουτί -->
+<div class="main-container">
+  <h1>Καλώς ήρθες στην εφαρμογή!</h1>
+
+  <div th:if="${authenticated}">
+    <p>
+      Είσαι συνδεδεμένος ως
+      <strong>
+        <span th:if="${#authorization.expression('hasRole(''STUDENT'')')}">student</span>
+        <span th:if="${#authorization.expression('hasRole(''COMPANY'')')}">company</span>
+        <span th:if="${#authorization.expression('hasRole(''PROFESSOR'')')}">professor</span>
+        <span th:if="${#authorization.expression('hasRole(''COMMITTEE'')')}">committee</span>
+        (<span th:text="${username}">user</span>)
+      </strong>
+    </p>
+  </div>
+
+  <div th:unless="${authenticated}">
+    <p>Δεν είσαι συνδεδεμένος.</p>
+    <p>
+      <a th:href="@{/login}">Σύνδεση</a> |
+      <a th:href="@{/register}">Εγγραφή</a>
+    </p>
+  </div>
+</div>
+
+<!-- Επιπλέον περιγραφή -->
+<div class="info-section">
+  <div th:unless="${authenticated}">
+    <h2>Τι είναι αυτή η εφαρμογή;</h2>
+    <p>
+      Η εφαρμογή απευθύνεται σε φοιτητές, καθηγητές, εταιρίες και επιτροπές για τη διαχείριση πρακτικών ασκήσεων. Παρέχει λειτουργίες όπως:
+    </p>
+    <ul>
+      <li><strong>Φοιτητές:</strong> Αναζήτηση και αίτηση σε θέσεις πρακτικής.</li>
+      <li><strong>Εταιρίες:</strong> Ανακοίνωση και παρακολούθηση θέσεων.</li>
+      <li><strong>Καθηγητές:</strong> Επίβλεψη και αξιολόγηση φοιτητών.</li>
+      <li><strong>Επιτροπές:</strong> Ανάθεση και οριστικοποίηση θέσεων.</li>
+    </ul>
+  </div>
+
+  <div th:if="${authenticated}">
+    <h2>Τι μπορείς να κάνεις;</h2>
+
+    <ul th:if="${#authorization.expression('hasRole(''STUDENT'')')}">
+      <li>Επεξεργασία προφίλ</li>
+      <li>Αναζήτηση διαθέσιμων θέσεων</li>
+      <li>Υποβολή αιτήσεων για πρακτική</li>
+      <li>Συμπλήρωση logbook κατά τη διάρκεια της πρακτικής</li>
+    </ul>
+
+    <ul th:if="${#authorization.expression('hasRole(''COMPANY'')')}">
+      <li>Επεξεργασία προφίλ</li>
+      <li>Ανακοίνωση νέων θέσεων πρακτικής</li>
+      <li>Προβολή και διαχείριση θέσεων</li>
+      <li>Αξιολόγηση φοιτητών μετά την ολοκλήρωση</li>
+    </ul>
+
+    <ul th:if="${#authorization.expression('hasRole(''PROFESSOR'')')}">
+      <li>Επεξεργασία προφίλ</li>
+      <li>Επιβλέπεις φοιτητές που σου έχουν ανατεθεί</li>
+      <li>Αξιολόγηση θέσεων και έργου φοιτητών</li>
+    </ul>
+
+    <ul th:if="${#authorization.expression('hasRole(''COMMITTEE'')')}">
+      <li>Προβολή αιτούντων φοιτητών</li>
+      <li>Αναζήτηση θέσεων για φοιτητές</li>
+      <li>Ανάθεση θέσεων σε καθηγητές</li>
+      <li>Προβολή θέσεων σε εξέλιξη και ολοκληρωμένων</li>
+      <li>Τελική αξιολόγηση και οριστικοποίηση αποτελεσμάτων</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

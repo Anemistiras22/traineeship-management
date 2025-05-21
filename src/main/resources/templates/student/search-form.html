@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Αναζήτηση Θέσεων</title>
+  <style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; color: #333; }
+    .main-container {
+      max-width: 500px; margin: 80px auto; padding: 30px;
+      background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center;
+    }
+    h1 { color: #0d47a1; margin-bottom: 25px; }
+    select {
+      width: 100%; padding: 10px; font-size: 14px;
+      border-radius: 5px; border: 1px solid #ccc;
+    }
+    button {
+      background-color: #1565c0; color: white;
+      padding: 10px 20px; border: none; border-radius: 5px;
+      font-size: 16px; cursor: pointer; margin-top: 25px; width: 100%;
+    }
+    button:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+  <h1>Αναζήτηση Θέσεων</h1>
+
+  <form th:action="@{/positions/search}" method="post">
+    <label for="strategy">Στρατηγική:</label><br/>
+    <select name="strategy" id="strategy">
+      <option value="interest">Interest-based</option>
+      <option value="location">Location-based</option>
+      <option value="combined">Combined</option>
+    </select>
+    <button type="submit">Αναζήτηση</button>
+  </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

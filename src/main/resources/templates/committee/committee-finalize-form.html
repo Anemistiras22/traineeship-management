@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Τελική Απόφαση</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #e9ecef;
+          color: #333;
+        }
+
+        .main-container {
+          max-width: 600px;
+          margin: 80px auto 40px auto;
+          padding: 20px 30px;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          text-align: center;
+        }
+
+        h1 {
+          color: #0d47a1;
+          margin-bottom: 25px;
+        }
+
+        label {
+          display: block;
+          font-size: 16px;
+          margin: 12px 0;
+        }
+
+        input[type="radio"] {
+          margin-right: 10px;
+        }
+
+        button {
+          background-color: #1565c0;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          margin-top: 20px;
+          width: 100%;
+        }
+
+        button:hover {
+          opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+    <h1>Τελική Απόφαση για Θέση ID: <span th:text="${positionId}"/></h1>
+
+    <form th:action="@{/committee/finalize/{positionId}(positionId=${positionId})}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <label>
+            <input type="radio" name="result" value="PASS" required/>
+            Pass
+        </label>
+
+        <label>
+            <input type="radio" name="result" value="FAIL" required/>
+            Fail
+        </label>
+
+        <button type="submit">Υποβολή</button>
+    </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

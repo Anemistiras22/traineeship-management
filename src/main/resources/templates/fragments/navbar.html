@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:fragment="navbar">
+
+<nav style="padding: 12px 20px; background: #1565c0; margin-bottom: 20px; font-family: sans-serif; font-size: 15px;">
+
+  <style>
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      display: inline-block;
+      background-color: #1976d2;
+      color: #ffffff;
+      padding: 8px 14px;
+      margin-right: 10px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .nav-btn:hover {
+      background-color: #64b5f6;
+      color: #003c8f;
+    }
+
+    .logout-btn {
+      background-color: #c62828;
+    }
+
+    .logout-btn:hover {
+      background-color: #ef5350;
+    }
+  </style>
+
+  <div class="nav-container">
+    <!-- Αριστερά όλα τα links -->
+    <div class="nav-left">
+      <a th:href="@{/}" class="nav-btn">Αρχική</a>
+
+      <span sec:authorize="isAnonymous()">
+    <a th:href="@{/login}" class="nav-btn">Σύνδεση</a>
+    <a th:href="@{/register}" class="nav-btn">Εγγραφή</a>
+  </span>
+
+      <span sec:authorize="hasRole('STUDENT')">
+    <a th:href="@{/students/me/edit}" class="nav-btn">Το Προφίλ Μου</a>
+    <a th:href="@{/search}" class="nav-btn">Αναζήτηση Θέσεων</a>
+    <a th:href="@{/logbook}" class="nav-btn">Logbook</a>
+  </span>
+
+      <span sec:authorize="hasRole('COMPANY')">
+    <a th:href="@{/company/me/edit}" class="nav-btn">Profile Εταιρίας</a>
+    <a th:href="@{/company/positions}" class="nav-btn">Οι Θέσεις Μου</a>
+  </span>
+
+      <span sec:authorize="hasRole('PROFESSOR')">
+    <a th:href="@{/professors/me/edit}" class="nav-btn">Profile Καθηγητή</a>
+    <a th:href="@{/professors/positions}" class="nav-btn">Θέσεις που Επιβλέπω</a>
+  </span>
+
+      <span sec:authorize="hasRole('COMMITTEE')">
+    <a th:href="@{/committee/applicants}" class="nav-btn">Αιτούντες</a>
+    <a th:href="@{/committee/search}" class="nav-btn">Ανάθεση</a>
+    <a th:href="@{/committee/positions/in-progress}" class="nav-btn">In-Progress Θέσεις</a>
+    <a th:href="@{/committee/positions/completed}" class="nav-btn">Ολοκληρωμένες Θέσεις</a>
+  </span>
+    </div>
+
+    <!-- Δεξιά το Logout -->
+    <div class="nav-right">
+  <span sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post" style="display:inline">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <a href="#" onclick="this.closest('form').submit(); return false;"
+         class="nav-btn logout-btn">
+        Logout
+      </a>
+    </form>
+  </span>
+    </div>
+
+  </div>
+</nav>
+</html>

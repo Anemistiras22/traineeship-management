@@ -1,0 +1,670 @@
+@startuml
+class com.cse.traineeship.controller.CompanyEvaluationController {
+- CompanyService companyService
+- CompanyEvaluationService evaluationService
++ <<Create>> CompanyEvaluationController(CompanyService,CompanyEvaluationService)
++ String showForm(Long,Authentication,Model)
++ String submit(Long,int,int,int,Authentication)
+}
+
+
+interface com.cse.traineeship.service.strategy.PositionSearchStrategy {
+~ List<TraineeshipPosition> findMatching(Student,List<TraineeshipPosition>)
+}
+
+interface com.cse.traineeship.repository.ProfessorRepository {
+~ Optional<Professor> findByUsername(String)
+}
+
+class com.cse.traineeship.controller.StudentController {
+- StudentService studentService
++ <<Create>> StudentController(StudentService)
++ String editMyProfile(Authentication,Model)
++ String saveMyProfile(Authentication,String,String,String,String,String)
+}
+
+
+class com.cse.traineeship.config.PasswordConfig {
++ PasswordEncoder passwordEncoder()
+}
+
+class com.cse.traineeship.domain.Company {
+- Long id
+- String username
+- String name
+- String location
+- List<TraineeshipPosition> positions
++ Long getId()
++ void setId(Long)
++ String getUsername()
++ void setUsername(String)
++ String getName()
++ void setName(String)
++ String getLocation()
++ void setLocation(String)
++ List<TraineeshipPosition> getPositions()
++ void setPositions(List<TraineeshipPosition>)
+}
+
+
+class com.cse.traineeship.domain.CompanyEvaluation {
+- Long id
+- TraineeshipPosition position
+- int motivation
+- int effectiveness
+- int efficiency
++ Long getId()
++ void setId(Long)
++ TraineeshipPosition getPosition()
++ void setPosition(TraineeshipPosition)
++ int getMotivation()
++ void setMotivation(int)
++ int getEffectiveness()
++ void setEffectiveness(int)
++ int getEfficiency()
++ void setEfficiency(int)
+}
+
+
+interface com.cse.traineeship.repository.CompanyRepository {
+~ Optional<Company> findByUsername(String)
+}
+
+class com.cse.traineeship.service.impl.ApplicationServiceImpl {
+- ApplicationRepository repo
+- PositionService positionService
+- StudentService studentService
++ <<Create>> ApplicationServiceImpl(ApplicationRepository,PositionService,StudentService)
++ void apply(Long,Long)
++ List<Application> findByPosition(Long)
++ List<Application> findByStudent(Long)
+}
+
+
+interface com.cse.traineeship.service.StudentService {
+~ Student findById(Long)
+~ Student findByUsername(String)
+~ Student createProfile(String,String,String,String,List<String>,List<String>)
+~ void updateProfile(Long,String,String,String,List<String>,List<String>)
+~ List<Student> findAll()
+}
+
+class com.cse.traineeship.service.UserServiceImpl {
+- UserRepository repo
+- PasswordEncoder encoder
++ <<Create>> UserServiceImpl(UserRepository,PasswordEncoder)
++ User register(User)
++ User loadUserByUsername(String)
+}
+
+
+class com.cse.traineeship.controller.ApplicationController {
+- ApplicationService applicationService
+- PositionService positionService
+- StudentService studentService
++ <<Create>> ApplicationController(ApplicationService,PositionService,StudentService)
++ String showApplyForm(Long,org.springframework.ui.Model)
++ String submitApply(Long,Authentication)
+}
+
+
+class com.cse.traineeship.controller.ProfessorEvaluationController {
+- ProfessorService professorService
+- ProfessorEvaluationService evaluationService
+- PositionService positionService
++ <<Create>> ProfessorEvaluationController(ProfessorService,ProfessorEvaluationService,PositionService)
++ String showForm(Long,Authentication,Model)
++ String submit(Long,int,int,int,int,int,Authentication)
+}
+
+
+class com.cse.traineeship.domain.Application {
+- Long id
+- Student student
+- TraineeshipPosition position
++ Long getId()
++ Student getStudent()
++ void setStudent(Student)
++ TraineeshipPosition getPosition()
++ void setPosition(TraineeshipPosition)
+}
+
+
+interface com.cse.traineeship.repository.LogbookEntryRepository {
+~ List<LogbookEntry> findByPositionIdOrderByTimestampDesc(Long)
+}
+
+class com.cse.traineeship.domain.TraineeshipPosition {
+- Long id
+- LocalDate startDate
+- LocalDate endDate
+- String description
+- List<String> requiredSkills
+- List<String> topics
+- Company company
+- Student assignedStudent
+- Professor supervisingProfessor
+- List<LogbookEntry> logbookEntries
+- CompanyEvaluation companyEvaluation
+- ProfessorEvaluation professorEvaluation
+- List<Application> applications
+- FinalResult finalResult
++ <<Create>> TraineeshipPosition()
++ List<Application> getApplications()
++ void addApplication(Application)
++ void removeApplication(Application)
++ Long getId()
++ void setId(Long)
++ LocalDate getStartDate()
++ void setStartDate(LocalDate)
++ LocalDate getEndDate()
++ void setEndDate(LocalDate)
++ String getDescription()
++ void setDescription(String)
++ List<String> getRequiredSkills()
++ void setRequiredSkills(List<String>)
++ List<String> getTopics()
++ void setTopics(List<String>)
++ Company getCompany()
++ void setCompany(Company)
++ Student getAssignedStudent()
++ void setAssignedStudent(Student)
++ Professor getSupervisingProfessor()
++ void setSupervisingProfessor(Professor)
++ List<LogbookEntry> getLogbookEntries()
++ void addLogbookEntry(LogbookEntry)
++ void removeLogbookEntry(LogbookEntry)
++ CompanyEvaluation getCompanyEvaluation()
++ void setCompanyEvaluation(CompanyEvaluation)
++ ProfessorEvaluation getProfessorEvaluation()
++ void setProfessorEvaluation(ProfessorEvaluation)
++ FinalResult getFinalResult()
++ void setFinalResult(FinalResult)
++ String getRequiredSkillsAsString()
++ String getTopicsAsString()
+}
+
+
+class com.cse.traineeship.domain.LogbookEntry {
+- Long id
+- TraineeshipPosition position
+- LocalDateTime timestamp
+- String description
++ <<Create>> LogbookEntry()
++ Long getId()
++ void setId(Long)
++ TraineeshipPosition getPosition()
++ void setPosition(TraineeshipPosition)
++ LocalDateTime getTimestamp()
++ void setTimestamp(LocalDateTime)
++ String getDescription()
++ void setDescription(String)
+}
+
+
+interface com.cse.traineeship.service.strategy.SupervisorAssignmentStrategy {
+~ Professor selectSupervisor(TraineeshipPosition,List<Professor>)
+}
+
+class com.cse.traineeship.domain.ProfessorEvaluation {
+- Long id
+- TraineeshipPosition position
+- int motivation
+- int effectiveness
+- int efficiency
+- int facilities
+- int guidance
++ Long getId()
++ void setId(Long)
++ TraineeshipPosition getPosition()
++ void setPosition(TraineeshipPosition)
++ int getMotivation()
++ void setMotivation(int)
++ int getEffectiveness()
++ void setEffectiveness(int)
++ int getEfficiency()
++ void setEfficiency(int)
++ int getFacilities()
++ void setFacilities(int)
++ int getGuidance()
++ void setGuidance(int)
+}
+
+
+class com.cse.traineeship.service.strategy.InterestBasedStrategy {
+- double threshold
++ <<Create>> InterestBasedStrategy(double)
++ List<TraineeshipPosition> findMatching(Student,List<TraineeshipPosition>)
+}
+
+
+class com.cse.traineeship.controller.PositionController {
+- PositionService positionService
+- CompanyService companyService
+- StudentService studentService
+- {static} double DEFAULT_THRESHOLD
++ <<Create>> PositionController(PositionService,CompanyService,StudentService)
++ String list(Model)
++ String showSearchForm(Authentication,Model)
++ String doSearch(String,Authentication,Model)
++ String showNewForm(Model)
++ String showEditForm(Long,Model)
++ String save(TraineeshipPosition,Long,List<String>,List<String>)
++ String delete(Long)
++ String showApplyForm(Long,Model)
++ String submitApply(Long,Long)
+}
+
+
+class com.cse.traineeship.service.strategy.InterestBasedProfessorStrategy {
+- double threshold
++ <<Create>> InterestBasedProfessorStrategy(double)
++ Professor selectSupervisor(TraineeshipPosition,List<Professor>)
+}
+
+
+interface com.cse.traineeship.service.ProfessorService {
+~ Professor findById(Long)
+~ Professor findByUsername(String)
+~ Professor createProfile(String,String,List<String>)
+~ void updateProfile(Long,String,List<String>)
+~ List<Professor> findAll()
+}
+
+class com.cse.traineeship.TraineeshipManagementApplication {
++ {static} void main(String[])
+}
+
+class com.cse.traineeship.domain.Student {
+- Long id
+- String username
+- String fullName
+- String universityId
+- String preferredLocation
+- List<String> interests
+- List<String> skills
+- List<Application> applications
++ List<Application> getApplications()
++ void addApplication(Application)
++ void removeApplication(Application)
++ Long getId()
++ void setId(Long)
++ String getUsername()
++ void setUsername(String)
++ String getFullName()
++ void setFullName(String)
++ String getUniversityId()
++ void setUniversityId(String)
++ String getPreferredLocation()
++ void setPreferredLocation(String)
++ List<String> getInterests()
++ void setInterests(List<String>)
++ List<String> getSkills()
++ void setSkills(List<String>)
+}
+
+
+interface com.cse.traineeship.service.ProfessorEvaluationService {
+~ ProfessorEvaluation findByPositionId(Long)
+~ ProfessorEvaluation saveOrUpdate(Long,int,int,int,int,int)
+}
+
+interface com.cse.traineeship.repository.PositionRepository {
+~ Optional<TraineeshipPosition> findByAssignedStudentId(Long)
+~ List<TraineeshipPosition> findAllByAssignedStudentId(Long)
+}
+
+interface com.cse.traineeship.repository.CompanyEvaluationRepository {
+~ Optional<CompanyEvaluation> findByPositionId(Long)
+}
+
+enum com.cse.traineeship.domain.FinalResult {
++  PASS
++  FAIL
+}
+
+interface com.cse.traineeship.repository.ProfessorEvaluationRepository {
+~ Optional<ProfessorEvaluation> findByPositionId(Long)
+}
+
+class com.cse.traineeship.service.strategy.LocationBasedStrategy {
++ List<TraineeshipPosition> findMatching(Student,List<TraineeshipPosition>)
+}
+
+class com.cse.traineeship.service.impl.StudentServiceImpl {
+- StudentRepository studentRepo
++ <<Create>> StudentServiceImpl(StudentRepository)
++ Student findById(Long)
++ Student findByUsername(String)
++ Student createProfile(String,String,String,String,List<String>,List<String>)
++ void updateProfile(Long,String,String,String,List<String>,List<String>)
++ List<Student> findAll()
+}
+
+
+class com.cse.traineeship.controller.CommitteeController {
+- CommitteeService committeeService
++ <<Create>> CommitteeController(CommitteeService)
++ String listApplicants(Model)
++ String showSearchForm(Model)
++ String processSearch(Long,String,Model)
++ String assignPosition(Long,Long)
++ String showAssignSupervisorForm(Long,Model)
++ String assignSupervisor(Long,String)
++ String listInProgress(Model)
++ String listCompleted(Model)
++ String showFinalizeForm(Long,Model)
++ String finalizePosition(Long,String)
+}
+
+
+class com.cse.traineeship.service.impl.CompanyServiceImpl {
+- CompanyRepository repo
++ <<Create>> CompanyServiceImpl(CompanyRepository)
++ Company findById(Long)
++ Company findByUsername(String)
++ Company createProfile(String,String,String)
++ void updateProfile(Long,String,String)
++ List<Company> findAll()
+}
+
+
+class com.cse.traineeship.service.impl.ProfessorServiceImpl {
+- ProfessorRepository repo
++ <<Create>> ProfessorServiceImpl(ProfessorRepository)
++ Professor findById(Long)
++ Professor findByUsername(String)
++ Professor createProfile(String,String,List<String>)
++ void updateProfile(Long,String,List<String>)
++ List<Professor> findAll()
+}
+
+
+class com.cse.traineeship.controller.LoginController {
++ String login()
+}
+
+class com.cse.traineeship.service.impl.ProfessorEvaluationServiceImpl {
+- ProfessorEvaluationRepository repo
+- PositionService positionService
++ <<Create>> ProfessorEvaluationServiceImpl(ProfessorEvaluationRepository,PositionService)
++ ProfessorEvaluation findByPositionId(Long)
++ ProfessorEvaluation saveOrUpdate(Long,int,int,int,int,int)
+}
+
+
+interface com.cse.traineeship.repository.UserRepository {
+~ Optional<User> findByUsername(String)
+}
+
+class com.cse.traineeship.controller.HomeController {
++ String home(Principal,Model)
+}
+
+class com.cse.traineeship.controller.AuthController {
+- UserService userService
++ <<Create>> AuthController(UserService)
++ ResponseEntity<User> register(User)
++ void login()
+}
+
+
+class com.cse.traineeship.controller.RegistrationController {
+- UserService userService
++ <<Create>> RegistrationController(UserService)
++ String showRegistrationForm()
++ String registerUser(String,String,Role)
+}
+
+
+class com.cse.traineeship.controller.ProfessorController {
+- ProfessorService professorService
++ <<Create>> ProfessorController(ProfessorService)
++ String editMyProfile(Authentication,Model)
++ String saveMyProfile(Authentication,String,String)
++ String listMyPositions(Authentication,Model)
+}
+
+
+interface com.cse.traineeship.service.ApplicationService {
+~ void apply(Long,Long)
+~ List<Application> findByPosition(Long)
+~ List<Application> findByStudent(Long)
+}
+
+class com.cse.traineeship.service.impl.CompanyEvaluationServiceImpl {
+- CompanyEvaluationRepository repo
+- PositionService positionService
++ <<Create>> CompanyEvaluationServiceImpl(CompanyEvaluationRepository,PositionService)
++ CompanyEvaluation findByPositionId(Long)
++ CompanyEvaluation saveOrUpdate(Long,int,int,int)
+}
+
+
+interface com.cse.traineeship.service.UserService {
+~ User register(User)
+}
+
+interface com.cse.traineeship.service.CommitteeService {
+~ List<Student> getAllApplicants()
+~ List<TraineeshipPosition> searchPositions(Long,String)
+~ void assignPosition(Long,Long)
+~ Professor assignSupervisor(Long,String)
+~ List<TraineeshipPosition> getInProgressPositions()
+~ void finalizePosition(Long,FinalResult)
+~ List<TraineeshipPosition> getCompletedPositions()
+}
+
+class com.cse.traineeship.controller.LogbookController {
+- LogbookService logbookService
+- StudentService studentService
+- PositionService positionService
++ <<Create>> LogbookController(LogbookService,StudentService,PositionService)
++ String listPositions(Model,Authentication)
++ String showEntries(Long,Model,Authentication)
++ String addEntry(Long,String,Authentication)
+}
+
+
+class com.cse.traineeship.config.SecurityConfig {
+- UserDetailsService userDetailsService
+- PasswordEncoder passwordEncoder
++ <<Create>> SecurityConfig(UserDetailsService,PasswordEncoder)
++ SecurityFilterChain filterChain(HttpSecurity)
++ DaoAuthenticationProvider authenticationProvider()
+}
+
+
+interface com.cse.traineeship.repository.StudentRepository {
+~ Optional<Student> findByUsername(String)
+}
+
+interface com.cse.traineeship.repository.ApplicationRepository {
+~ List<Application> findAllByPositionId(Long)
+~ List<Application> findAllByStudentId(Long)
+~ boolean existsByPositionIdAndStudentId(Long,Long)
+}
+
+class com.cse.traineeship.service.strategy.LoadBasedProfessorStrategy {
++ Professor selectSupervisor(TraineeshipPosition,List<Professor>)
+}
+
+class com.cse.traineeship.controller.SearchController {
+- CommitteeService committeeService
+- PositionService positionService
+- StudentService studentService
++ <<Create>> SearchController(CommitteeService,PositionService,StudentService)
++ String showSearchForm(Model)
++ String doSearch(String,Authentication,Model)
++ String apply(Long,Authentication)
+}
+
+
+interface com.cse.traineeship.service.PositionService {
+~ List<TraineeshipPosition> findAll()
+~ TraineeshipPosition findById(Long)
+~ TraineeshipPosition save(TraineeshipPosition)
+~ void deleteById(Long)
+~ void apply(Long,Long)
+~ TraineeshipPosition findByStudentId(Long)
+~ List<TraineeshipPosition> findAllByStudentId(Long)
+}
+
+interface com.cse.traineeship.service.CompanyService {
+~ Company findById(Long)
+~ Company findByUsername(String)
+~ Company createProfile(String,String,String)
+~ void updateProfile(Long,String,String)
+~ List<Company> findAll()
+}
+
+class com.cse.traineeship.service.impl.CommitteeServiceImpl {
+- StudentService studentService
+- PositionService positionService
+- ProfessorService professorService
+- {static} double DEFAULT_THRESHOLD
++ <<Create>> CommitteeServiceImpl(StudentService,PositionService,ProfessorService)
++ List<Student> getAllApplicants()
++ List<TraineeshipPosition> searchPositions(Long,String)
++ void assignPosition(Long,Long)
++ Professor assignSupervisor(Long,String)
++ void finalizePosition(Long,FinalResult)
++ List<TraineeshipPosition> getInProgressPositions()
++ List<TraineeshipPosition> getCompletedPositions()
+}
+
+
+class com.cse.traineeship.service.impl.PositionServiceImpl {
+- PositionRepository positionRepo
+- StudentService studentService
++ <<Create>> PositionServiceImpl(PositionRepository,StudentService)
++ List<TraineeshipPosition> findAll()
++ TraineeshipPosition findById(Long)
++ TraineeshipPosition save(TraineeshipPosition)
++ void deleteById(Long)
++ void apply(Long,Long)
++ TraineeshipPosition findByStudentId(Long)
++ List<TraineeshipPosition> findAllByStudentId(Long)
+}
+
+
+class com.cse.traineeship.controller.CompanyController {
+- CompanyService companyService
+- PositionService positionService
++ <<Create>> CompanyController(CompanyService,PositionService)
++ String editMyProfile(Authentication,Model)
++ String saveMyProfile(Authentication,String,String)
++ String listMyPositions(Authentication,Model)
++ String showNewPositionForm(Authentication,Model)
++ String saveNewPosition(Authentication,TraineeshipPosition,String,String)
++ String deletePosition(Long,Authentication)
+}
+
+
+interface com.cse.traineeship.service.CompanyEvaluationService {
+~ CompanyEvaluation findByPositionId(Long)
+~ CompanyEvaluation saveOrUpdate(Long,int,int,int)
+}
+
+class com.cse.traineeship.service.strategy.CombinedStrategy {
+- InterestBasedStrategy interestStrategy
+- LocationBasedStrategy locationStrategy
++ <<Create>> CombinedStrategy(double)
++ List<TraineeshipPosition> findMatching(Student,List<TraineeshipPosition>)
+}
+
+
+class com.cse.traineeship.service.impl.LogbookServiceImpl {
+- LogbookEntryRepository entryRepo
+- PositionService positionService
++ <<Create>> LogbookServiceImpl(LogbookEntryRepository,PositionService)
++ List<LogbookEntry> findEntriesForPosition(Long)
++ LogbookEntry addEntry(Long,String)
+}
+
+
+enum com.cse.traineeship.domain.Role {
++  STUDENT
++  COMPANY
++  PROFESSOR
++  COMMITTEE
+}
+
+class com.cse.traineeship.domain.User {
+- Long id
+- String username
+- String password
+- Role role
++ <<Create>> User()
++ <<Create>> User(String,String,Role)
++ Long getId()
++ void setId(Long)
++ String getUsername()
++ void setUsername(String)
++ String getPassword()
++ void setPassword(String)
++ Role getRole()
++ void setRole(Role)
++ Collection<? extends GrantedAuthority> getAuthorities()
++ boolean isAccountNonExpired()
++ boolean isAccountNonLocked()
++ boolean isCredentialsNonExpired()
++ boolean isEnabled()
+}
+
+
+class com.cse.traineeship.domain.Professor {
+- Long id
+- String username
+- String fullName
+- List<String> interests
+- List<TraineeshipPosition> supervisedPositions
++ Long getId()
++ void setId(Long)
++ String getUsername()
++ void setUsername(String)
++ String getFullName()
++ void setFullName(String)
++ List<String> getInterests()
++ void setInterests(List<String>)
++ List<TraineeshipPosition> getSupervisedPositions()
++ void setSupervisedPositions(List<TraineeshipPosition>)
+}
+
+
+interface com.cse.traineeship.service.LogbookService {
+~ List<LogbookEntry> findEntriesForPosition(Long)
+~ LogbookEntry addEntry(Long,String)
+}
+
+
+
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.ProfessorRepository
+java.io.Serializable <|.. com.cse.traineeship.domain.CompanyEvaluation
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.CompanyRepository
+com.cse.traineeship.service.ApplicationService <|.. com.cse.traineeship.service.impl.ApplicationServiceImpl
+com.cse.traineeship.service.UserService <|.. com.cse.traineeship.service.UserServiceImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.LogbookEntryRepository
+java.io.Serializable <|.. com.cse.traineeship.domain.ProfessorEvaluation
+com.cse.traineeship.service.strategy.PositionSearchStrategy <|.. com.cse.traineeship.service.strategy.InterestBasedStrategy
+com.cse.traineeship.service.strategy.SupervisorAssignmentStrategy <|.. com.cse.traineeship.service.strategy.InterestBasedProfessorStrategy
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.PositionRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.CompanyEvaluationRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.ProfessorEvaluationRepository
+com.cse.traineeship.service.strategy.PositionSearchStrategy <|.. com.cse.traineeship.service.strategy.LocationBasedStrategy
+com.cse.traineeship.service.StudentService <|.. com.cse.traineeship.service.impl.StudentServiceImpl
+com.cse.traineeship.service.CompanyService <|.. com.cse.traineeship.service.impl.CompanyServiceImpl
+com.cse.traineeship.service.ProfessorService <|.. com.cse.traineeship.service.impl.ProfessorServiceImpl
+com.cse.traineeship.service.ProfessorEvaluationService <|.. com.cse.traineeship.service.impl.ProfessorEvaluationServiceImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.UserRepository
+com.cse.traineeship.service.CompanyEvaluationService <|.. com.cse.traineeship.service.impl.CompanyEvaluationServiceImpl
+org.springframework.security.core.userdetails.UserDetailsService <|-- com.cse.traineeship.service.UserService
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.StudentRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.cse.traineeship.repository.ApplicationRepository
+com.cse.traineeship.service.strategy.SupervisorAssignmentStrategy <|.. com.cse.traineeship.service.strategy.LoadBasedProfessorStrategy
+com.cse.traineeship.service.CommitteeService <|.. com.cse.traineeship.service.impl.CommitteeServiceImpl
+com.cse.traineeship.service.PositionService <|.. com.cse.traineeship.service.impl.PositionServiceImpl
+com.cse.traineeship.service.strategy.PositionSearchStrategy <|.. com.cse.traineeship.service.strategy.CombinedStrategy
+com.cse.traineeship.service.LogbookService <|.. com.cse.traineeship.service.impl.LogbookServiceImpl
+org.springframework.security.core.userdetails.UserDetails <|.. com.cse.traineeship.domain.User
+@enduml

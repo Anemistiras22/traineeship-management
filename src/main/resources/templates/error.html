@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Σφάλμα Εφαρμογής</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/your-main-stylesheet.css}">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #e9ecef;
+            color: #212529;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            box-sizing: border-box;
+        }
+
+        .app-header {
+            font-size: 28px;
+            font-weight: bold;
+            color: #004a99;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .content-card {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .content-card h1 {
+            font-size: 24px;
+            color: #004a99;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .content-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .error-details {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 25px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .error-details strong {
+            color: #343a40;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    Maybe you should not be here...
+</div>
+
+<div class="content-card">
+    <h1>Ωχ! Κάτι πήγε στραβά.</h1>
+    <p>Παρουσιάστηκε ένα απρόσμενο σφάλμα στην εφαρμογή.</p>
+
+    <div class="error-details" th:if="${status} or ${error} or ${message}">
+        <p th:if="${timestamp}"><strong>Timestamp:</strong> <span th:text="${#dates.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+        <p th:if="${status}"><strong>Status:</strong> <span th:text="${status}"></span></p>
+        <p th:if="${error}"><strong>Error:</strong> <span th:text="${error}"></span></p>
+        <p th:if="${message}"><strong>Μήνυμα:</strong> <span th:text="${message}"></span></p>
+        <p th:if="${path}"><strong>Path:</strong> <span th:text="${path}"></span></p>
+    </div>
+
+    <a href="javascript:history.back()" class="back-button">Επιστροφή στην προηγούμενη σελίδα</a>
+</div>
+
+</body>
+</html>

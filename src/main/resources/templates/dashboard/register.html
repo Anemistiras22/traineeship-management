@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Register</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      color: #333;
+    }
+
+    .main-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h1 {
+      color: #0d47a1;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    input[type="text"], input[type="password"], select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+
+    button {
+      background-color: #1565c0;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    p {
+      margin-top: 15px;
+    }
+
+    .success {
+      color: #2e7d32;
+    }
+
+    a {
+      color: #1565c0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+  <h1>Register</h1>
+
+  <form th:action="@{/register}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required/>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required/>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+      <option th:each="r : ${T(com.cse.traineeship.domain.Role).values()}"
+              th:value="${r}" th:text="${r}">ROLE</option>
+    </select>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p>Έχεις ήδη λογαριασμό; <a th:href="@{/login}">Σύνδεση</a></p>
+  <p th:if="${param.registered}" class="success">Επιτυχής εγγραφή! Συνδέσου παρακάτω.</p>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

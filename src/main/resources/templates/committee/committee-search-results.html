@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Αποτελέσματα Αναζήτησης</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      color: #333;
+    }
+
+    .main-container {
+      max-width: 1000px;
+      margin: 80px auto 40px auto;
+      padding: 20px 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      color: #0d47a1;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-container a {
+      color: #1565c0;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    form {
+      display: inline;
+    }
+
+    button {
+      background-color: #1565c0;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+  <h1>Αποτελέσματα Αναζήτησης</h1>
+
+  <div th:if="${positions.empty}">
+    <p>Δεν βρέθηκαν διαθέσιμες θέσεις για το συγκεκριμένο φοιτητή/κριτήριο.</p>
+    <p><a th:href="@{/committee/search}">Νέα Αναζήτηση</a></p>
+  </div>
+
+  <div th:if="${!positions.empty}">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Περιγραφή</th>
+        <th>Ημ. Έναρξης</th>
+        <th>Ημ. Λήξης</th>
+        <th>Required Skills</th>
+        <th>Topics</th>
+        <th>Ενέργεια</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="pos : ${positions}">
+        <td th:text="${pos.id}"></td>
+        <td th:text="${pos.description}"></td>
+        <td th:text="${pos.startDate}"></td>
+        <td th:text="${pos.endDate}"></td>
+        <td th:text="${#strings.listJoin(pos.requiredSkills, ', ')}"></td>
+        <td th:text="${#strings.listJoin(pos.topics, ', ')}"></td>
+        <td>
+          <form th:action="@{/committee/assign/{positionId}(positionId=${pos.id})}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" name="studentId" th:value="${studentId}"/>
+            <button type="submit">Ανάθεση</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p><a th:href="@{/committee/search}">Νέα Αναζήτηση</a></p>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

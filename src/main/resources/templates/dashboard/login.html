@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      color: #333;
+    }
+
+    .main-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h1 {
+      color: #0d47a1;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+
+    button {
+      background-color: #1565c0;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    p {
+      margin-top: 15px;
+    }
+
+    .error {
+      color: #c62828;
+    }
+
+    .success {
+      color: #2e7d32;
+    }
+
+    a {
+      color: #1565c0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+  <h1>Σύνδεση</h1>
+
+  <form th:action="@{/login}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required/>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required/>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p th:if="${param.error}" class="error">Σφάλμα σύνδεσης. Δοκιμάστε ξανά.</p>
+  <p th:if="${param.logout}" class="success">Έχετε αποσυνδεθεί επιτυχώς.</p>
+
+  <p>Δεν έχεις λογαριασμό; <a th:href="@{/register}">Εγγραφή</a></p>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

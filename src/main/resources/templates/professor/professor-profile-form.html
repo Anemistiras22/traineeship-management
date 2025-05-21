@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Profile Καθηγητή</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #e9ecef;
+          color: #333;
+        }
+
+        .main-container {
+          max-width: 600px;
+          margin: 80px auto;
+          padding: 30px;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+          color: #0d47a1;
+          text-align: center;
+          margin-bottom: 25px;
+        }
+
+        label {
+          display: block;
+          font-weight: bold;
+          margin-top: 15px;
+          margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+          width: 100%;
+          padding: 10px;
+          font-size: 14px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
+
+        button {
+          background-color: #1565c0;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          margin-top: 25px;
+          width: 100%;
+        }
+
+        button:hover {
+          opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+    <h1>Το Προφίλ Μου (Καθηγητής)</h1>
+
+    <form th:action="@{/professors/me/edit}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <label for="fullName">Ονοματεπώνυμο:</label>
+        <input type="text" name="fullName" id="fullName" th:value="${professor.fullName}" required/>
+
+        <label for="interests">Interests (κόμμα-χωριστά):</label>
+        <input type="text" name="interests" id="interests"
+               th:value="${professor.interests != null
+                    ? #strings.listJoin(professor.interests, ',') : ''}"/>
+
+        <button type="submit">Αποθήκευση</button>
+    </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Ολοκληρωμένες Θέσεις</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #e9ecef;
+          color: #333;
+        }
+
+        .main-container {
+          max-width: 1000px;
+          margin: 80px auto 40px auto;
+          padding: 20px 30px;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+          color: #0d47a1;
+          text-align: center;
+          margin-bottom: 25px;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        th, td {
+          padding: 12px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          background-color: #f0f0f0;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #fafafa;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+
+        td[colspan] {
+          text-align: center;
+          font-style: italic;
+          color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+    <h1>Ολοκληρωμένες Θέσεις</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Φοιτητής</th>
+            <th>Περιγραφή</th>
+            <th>Supervisor</th>
+            <th>Αποτέλεσμα</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${positions.empty}">
+            <td colspan="5">Δεν υπάρχουν ολοκληρωμένες θέσεις.</td>
+        </tr>
+        <tr th:each="pos : ${positions}">
+            <td th:text="${pos.id}"></td>
+            <td th:text="${pos.assignedStudent.fullName}"></td>
+            <td th:text="${pos.description}"></td>
+            <td th:text="${pos.supervisingProfessor.fullName}"></td>
+            <td th:text="${pos.finalResult}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

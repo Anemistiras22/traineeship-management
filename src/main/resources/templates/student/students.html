@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Students</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      color: #333;
+    }
+
+    .main-container {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 20px 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      color: #0d47a1;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .top-link {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .top-link a {
+      color: #1565c0;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .top-link a:hover {
+      text-decoration: underline;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    a {
+      color: #1565c0;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .home-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+  <h1>Students</h1>
+
+  <div class="top-link">
+    <a th:href="@{/students/new}">➕ New Student</a>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th><th>Full Name</th><th>Univ ID</th><th>Interests</th><th>Skills</th><th>Pref. Loc</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s : ${students}">
+      <td th:text="${s.id}">1</td>
+      <td th:text="${s.fullName}">Name</td>
+      <td th:text="${s.universityId}">U123</td>
+      <td th:text="${#strings.arrayJoin(s.interests.toArray(), ', ')}">...</td>
+      <td th:text="${#strings.arrayJoin(s.skills.toArray(), ', ')}">...</td>
+      <td th:text="${s.preferredLocation}">Loc</td>
+      <td>
+        <a th:href="@{|/students/${s.id}/edit|}">Edit</a>
+        <a th:href="@{|/students/${s.id}/delete|}" onclick="return confirm('Delete?');">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="home-link">
+    <a th:href="@{/}">← Home</a>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
