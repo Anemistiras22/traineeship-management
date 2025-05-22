@@ -17,9 +17,9 @@ public interface CommitteeService {
 
     Professor assignSupervisor(Long positionId, String strategy);
 
-    List<TraineeshipPosition> getInProgressPositions();  // Νέα μέθοδος
+    List<TraineeshipPosition> getInProgressPositions();
 
     void finalizePosition(Long positionId, FinalResult result);
 
-    List<TraineeshipPosition> getCompletedPositions(); // Νέα
+    List<TraineeshipPosition> getCompletedPositions();
 }

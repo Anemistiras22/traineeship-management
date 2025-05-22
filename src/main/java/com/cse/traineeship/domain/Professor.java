@@ -11,7 +11,6 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Το username του User που έχει ρόλο PROFESSOR */
     @Column(unique = true, nullable = false)
     private String username;
 

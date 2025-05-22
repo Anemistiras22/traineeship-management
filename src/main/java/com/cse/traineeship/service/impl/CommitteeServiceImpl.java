@@ -30,7 +30,6 @@ public class CommitteeServiceImpl implements CommitteeService {
     private final PositionService positionService;
     private final ProfessorService professorService;
 
-    // threshold για τις στρατηγικές βασισμένες στο Jaccard
     private static final double DEFAULT_THRESHOLD = 0.5;
 
     public CommitteeServiceImpl(StudentService studentService,
@@ -41,35 +40,28 @@ public class CommitteeServiceImpl implements CommitteeService {
         this.professorService = professorService;
     }
 
-    /**
-     * US16: Επιστρέφει όλους τους φοιτητές που έχουν κάνει αίτηση (distinct).
-     */
+    //US16:
     @Override
     public List<Student> getAllApplicants() {
         return positionService.findAll().stream()
-            // παίρνουμε όλες τις αιτήσεις από κάθε θέση
             .flatMap(pos -> pos.getApplications().stream())
-            .map(Application::getStudent)   // τον φοιτητή κάθε αίτησης
-            .distinct()                     // χωρίς διπλότυπα
+            .map(Application::getStudent)
+            .distinct()
             .collect(Collectors.toList());
     }
 
-    /**
-     * US17: Αναζητάμε, μεταξύ των θέσεων στις οποίες ο φοιτητής έχει κάνει αίτηση
-     * (και που δεν είναι ήδη κατειλημμένες), τις ταιριαστές με τη στρατηγική.
-     */
+    //US17:
+
     @Override
     public List<TraineeshipPosition> searchPositions(Long studentId, String strategy) {
-        // φιλτράρουμε τις θέσεις όπου υπάρχει αίτηση από αυτόν τον φοιτητή
         List<TraineeshipPosition> applied = positionService.findAll().stream()
             .filter(p ->
-                p.getAssignedStudent() == null &&               // ακόμα ανοιχτή
+                p.getAssignedStudent() == null &&
                 p.getApplications().stream()
                  .anyMatch(app -> app.getStudent().getId().equals(studentId))
             )
             .collect(Collectors.toList());
 
-        // επιλέγουμε στρατηγική
         PositionSearchStrategy strat;
         switch (strategy) {
             case "interest":
@@ -84,13 +76,10 @@ public class CommitteeServiceImpl implements CommitteeService {
                 break;
         }
 
-        // επιστρέφουμε τα αποτελέσματα
         return strat.findMatching(studentService.findById(studentId), applied);
     }
 
-    /**
-     * US18: Ο committee επιλέγει τελικά ποιος φοιτητής αναλαμβάνει τη θέση.
-     */
+    //US18
     @Override
     public void assignPosition(Long positionId, Long studentId) {
         TraineeshipPosition pos = positionService.findById(positionId);
@@ -99,9 +88,7 @@ public class CommitteeServiceImpl implements CommitteeService {
         positionService.save(pos);
     }
 
-    /**
-     * US19: Ανάθεση supervisor με στρατηγική.
-     */
+    //US19
     @Override
     public Professor assignSupervisor(Long positionId, String strategy) {
         TraineeshipPosition position = positionService.findById(positionId);
@@ -118,9 +105,7 @@ public class CommitteeServiceImpl implements CommitteeService {
         return selected;
     }
 
-    /**
-     * US21: Οριστική απόφαση PASS/FAIL.
-     */
+    //US21
     @Override
     public void finalizePosition(Long positionId, FinalResult result) {
         TraineeshipPosition pos = positionService.findById(positionId);
@@ -128,9 +113,7 @@ public class CommitteeServiceImpl implements CommitteeService {
         positionService.save(pos);
     }
 
-    /**
-     * US20: Λίστα των in-progress θέσεων (assigned αλλά όχι finalized).
-     */
+    //US20
     @Override
     public List<TraineeshipPosition> getInProgressPositions() {
         return positionService.findAll().stream()
@@ -138,9 +121,7 @@ public class CommitteeServiceImpl implements CommitteeService {
             .collect(Collectors.toList());
     }
 
-    /**
-     * (Πρόσθετο) Λίστα των ολοκληρωμένων (finalized) θέσεων.
-     */
+
     @Override
     public List<TraineeshipPosition> getCompletedPositions() {
         return positionService.findAll().stream()

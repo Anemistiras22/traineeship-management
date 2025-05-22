@@ -13,7 +13,6 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Συνδεδεμένο username από users.username */
     @Column(unique = true, nullable = false)
     private String username;
 

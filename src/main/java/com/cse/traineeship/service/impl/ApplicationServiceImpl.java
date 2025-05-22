@@ -31,7 +31,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void apply(Long positionId, Long studentId) {
         if (repo.existsByPositionIdAndStudentId(positionId, studentId)) {
-            return; // ήδη έχει κάνει αίτηση
+            return;
         }
         TraineeshipPosition pos = positionService.findById(positionId);
         if (pos.getAssignedStudent() != null) {

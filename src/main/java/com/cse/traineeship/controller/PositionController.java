@@ -34,7 +34,6 @@ public class PositionController {
         this.studentService = studentService;
     }
 
-    /** Λίστα όλων των θέσεων */
     @GetMapping
     public String list(Model model) {
         List<TraineeshipPosition> positions = positionService.findAll();
@@ -42,11 +41,9 @@ public class PositionController {
         return "positions";
     }
 
-    /** Φόρμα αναζήτησης (student) */
     @GetMapping("/search")
     public String showSearchForm(Authentication auth, Model model) {
         Student student = studentService.findByUsername(auth.getName());
-        // guard: αν δεν υπάρχει ή δεν είναι πλήρες το profile
         if (student == null
                 || student.getFullName() == null || student.getFullName().isBlank()
                 || student.getUniversityId() == null || student.getUniversityId().isBlank()) {
@@ -55,13 +52,11 @@ public class PositionController {
         return "student/search-form";
     }
 
-    /** Υποβολή αναζήτησης (student) */
     @PostMapping("/search")
     public String doSearch(@RequestParam String strategy,
                            Authentication auth,
                            Model model) {
         Student student = studentService.findByUsername(auth.getName());
-        // guard πάλι για null ή ανολοκλήρωτο profile
         if (student == null
                 || student.getFullName() == null || student.getFullName().isBlank()
                 || student.getUniversityId() == null || student.getUniversityId().isBlank()) {
@@ -92,7 +87,6 @@ public class PositionController {
         return "student/search-results";
     }
 
-    /** Φόρμα δημιουργίας νέας θέσης (committee & company) */
     @GetMapping("/new")
     public String showNewForm(Model model) {
         model.addAttribute("position", new TraineeshipPosition());
@@ -100,7 +94,6 @@ public class PositionController {
         return "company/position-form";
     }
 
-    /** Επεξεργασία υπάρχουσας θέσης */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("position", positionService.findById(id));
@@ -108,7 +101,6 @@ public class PositionController {
         return "company/position-form";
     }
 
-    /** Αποθήκευση νέας ή επεξεργασμένης θέσης */
     @PostMapping("/save")
     public String save(@ModelAttribute TraineeshipPosition position,
                        @RequestParam("companyId") Long companyId,
@@ -122,14 +114,12 @@ public class PositionController {
         return "redirect:/positions";
     }
 
-    /** Διαγραφή θέσης */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         positionService.deleteById(id);
         return "redirect:/positions";
     }
 
-    /** Φόρμα apply φοιτητή για θέση */
     @GetMapping("/apply/{id}")
     public String showApplyForm(@PathVariable Long id, Model model) {
         model.addAttribute("position", positionService.findById(id));
@@ -137,12 +127,10 @@ public class PositionController {
         return "student/apply-form";
     }
 
-    /** Υποβολή apply φοιτητή για θέση */
     @PostMapping("/apply/{id}")
     public String submitApply(@PathVariable Long id,
                               @RequestParam("studentId") Long studentId) {
         positionService.apply(id, studentId);
-        // μετά το apply θα μείνει ο φοιτητής στη σελίδα αναζητήσεων
         return "redirect:/positions/search";
     }
 }

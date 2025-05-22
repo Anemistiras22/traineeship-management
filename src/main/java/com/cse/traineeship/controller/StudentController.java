@@ -26,13 +26,12 @@ public class StudentController {
         String username = authentication.getName();
         Student student = studentService.findByUsername(username);
         if (student == null) {
-            // Δημιουργούμε ένα προσωρινό Student για να μην έχουμε null fields
             student = new Student();
             student.setUsername(username);
             student.setFullName("");
             student.setUniversityId("");
             student.setPreferredLocation("");
-            student.setInterests(List.of());   // κενές λίστες
+            student.setInterests(List.of());
             student.setSkills(List.of());
         }
         model.addAttribute("student", student);
@@ -40,7 +39,6 @@ public class StudentController {
     }
 
 
-    /** Υποβολή φόρμας για create OR update */
     @PostMapping("/me/edit")
     public String saveMyProfile(Authentication authentication,
                                 @RequestParam String fullName,
@@ -63,12 +61,10 @@ public class StudentController {
 
         Student existing = studentService.findByUsername(username);
         if (existing == null) {
-            // δημιουργία νέου
             studentService.createProfile(
                     username, fullName, universityId, preferredLocation, interestList, skillList
             );
         } else {
-            // επεξεργασία υπάρχοντος
             studentService.updateProfile(
                     existing.getId(), fullName, universityId, preferredLocation, interestList, skillList
             );

@@ -11,7 +11,6 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Το username του User που έχει ρόλο COMPANY */
     @Column(unique = true, nullable = false)
     private String username;
 

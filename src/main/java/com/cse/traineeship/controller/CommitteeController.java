@@ -76,7 +76,7 @@ public class CommitteeController {
         return "committee/committee-in-progress";
     }
 
-    // **US22** (νέο): Completed
+    // Completed
     @GetMapping("/positions/completed")
     public String listCompleted(Model model) {
         List<TraineeshipPosition> completed = committeeService.getCompletedPositions();
@@ -84,7 +84,7 @@ public class CommitteeController {
         return "committee/committee-completed";
     }
 
-    // US21: Finalize (όπως πριν)
+    // US21: Finalize
     @GetMapping("/finalize/{positionId}")
     public String showFinalizeForm(@PathVariable Long positionId, Model model) {
         model.addAttribute("positionId", positionId);

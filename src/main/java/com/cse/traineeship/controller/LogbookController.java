@@ -29,11 +29,9 @@ public class LogbookController {
         this.positionService = positionService;
     }
 
-    /** 1) Λίστα όλων των θέσεων του φοιτητή */
     @GetMapping
     public String listPositions(Model model, Authentication auth) {
         Student student = studentService.findByUsername(auth.getName());
-        // guard: αν δεν υπάρχει ή ανολοκλήρωτο προφίλ
         if (student == null
                 || student.getFullName() == null || student.getFullName().isBlank()
                 || student.getUniversityId() == null || student.getUniversityId().isBlank()) {
@@ -46,7 +44,6 @@ public class LogbookController {
         return "student/logbook";
     }
 
-    /** 2) Εμφάνιση καταχωρήσεων συγκεκριμένης θέσης */
     @GetMapping("/{positionId}")
     public String showEntries(@PathVariable Long positionId,
                               Model model,
@@ -66,7 +63,6 @@ public class LogbookController {
         return "student/logbook-entries";
     }
 
-    /** 3) Προσθήκη νέας καταχώρησης */
     @PostMapping("/add")
     public String addEntry(@RequestParam Long positionId,
                            @RequestParam String description,

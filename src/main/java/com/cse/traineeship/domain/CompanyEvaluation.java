@@ -11,20 +11,16 @@ public class CompanyEvaluation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Η θέση που αξιολογείται (1–1) */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id", nullable = false, unique = true)
     private TraineeshipPosition position;
 
-    /** Βαθμός παρακίνησης φοιτητή (1–5) */
     @Column(nullable = false)
     private int motivation;
 
-    /** Βαθμός αποτελεσματικότητας εργασίας (1–5) */
     @Column(nullable = false)
     private int effectiveness;
 
-    /** Βαθμός αποδοτικότητας χρόνου (1–5) */
     @Column(nullable = false)
     private int efficiency;
 

@@ -36,7 +36,6 @@ public class ApplicationController {
             .findByUsername(auth.getName())
             .getId();
         applicationService.apply(positionId, studentId);
-        // redirect πλέον στη σελίδα αναζήτησης του φοιτητή
         return "redirect:/positions/search";
     }
 }

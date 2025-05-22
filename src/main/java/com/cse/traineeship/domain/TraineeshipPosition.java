@@ -87,7 +87,6 @@ public class TraineeshipPosition {
     }
     
 
-    /** Νέο πεδίο τελικής αξιολόγησης */
     @Enumerated(EnumType.STRING)
     @Column(name = "final_result")
     private FinalResult finalResult;

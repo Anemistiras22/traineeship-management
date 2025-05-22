@@ -53,13 +53,12 @@ public class CompanyController {
         return "redirect:/company/positions";
     }
 
-    // ————————— Dashboard Θέσεων —————————
+    //  Dashboard Θέσεων
 
     @GetMapping("/positions")
     public String listMyPositions(Authentication auth, Model model) {
         String username = auth.getName();
         Company c = companyService.findByUsername(username);
-        // guard: αν δεν υπάρχει profile, redirect
         if (c == null || c.getName() == null || c.getName().isBlank()) {
             return "redirect:/company/me/edit";
         }
@@ -77,13 +76,12 @@ public class CompanyController {
         return "company/company-positions";
     }
 
-    // ————————— US10: Νέα Θέση —————————
+    // US10
 
     @GetMapping("/positions/new")
     public String showNewPositionForm(Authentication auth, Model model) {
         String username = auth.getName();
         Company c = companyService.findByUsername(username);
-        // guard: αν δεν υπάρχει profile, redirect
         if (c == null || c.getName() == null || c.getName().isBlank()) {
             return "redirect:/company/me/edit";
         }
@@ -119,7 +117,7 @@ public class CompanyController {
         return "redirect:/company/positions";
     }
 
-    // ————————— US11: Διαγραφή Θέσης —————————
+    // US11: Διαγραφή Θέσης
 
     @GetMapping("/positions/delete/{id}")
     public String deletePosition(@PathVariable Long id, Authentication auth) {

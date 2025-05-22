@@ -21,7 +21,6 @@ public class ProfessorController {
         this.professorService = professorService;
     }
 
-    // 1) Εμφάνιση φόρμας create/edit προφίλ
     @GetMapping("/me/edit")
     public String editMyProfile(Authentication auth, Model model) {
         String username = auth.getName();
@@ -34,7 +33,6 @@ public class ProfessorController {
         return "professor/professor-profile-form";
     }
 
-    // 2) Υποβολή αλλαγών ή create
     @PostMapping("/me/edit")
     public String saveMyProfile(Authentication auth,
                                 @RequestParam String fullName,
@@ -53,16 +51,13 @@ public class ProfessorController {
         return "redirect:/professors/positions";
     }
 
-    // 3) Λίστα Positions που επιβλέπει
     @GetMapping("/positions")
     public String listMyPositions(Authentication auth, Model model) {
         String username = auth.getName();
         Professor p = professorService.findByUsername(username);
-        // αν δεν υπάρχει προφίλ, πρώτα φτιάχνουμε το προφίλ
         if (p == null) {
             return "redirect:/professors/me/edit";
         }
-        // τώρα ασφαλώς p != null
         model.addAttribute("positions", p.getSupervisedPositions());
         return "professor/professor-positions";
     }

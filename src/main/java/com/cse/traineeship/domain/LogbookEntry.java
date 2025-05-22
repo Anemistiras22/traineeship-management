@@ -11,21 +11,17 @@ public class LogbookEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** H θέση στην οποία ανήκει αυτή η καταχώρηση */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id", nullable = false)
     private TraineeshipPosition position;
 
-    /** Χρονική στιγμή καταγραφής */
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    /** Περιγραφή δραστηριότητας */
     @Column(length = 2000, nullable = false)
     private String description;
 
     public LogbookEntry() {
-        // ορίζουμε timestamp κατά τη δημιουργία
         this.timestamp = LocalDateTime.now();
     }
 

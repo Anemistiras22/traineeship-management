@@ -31,7 +31,6 @@ public class ProfessorEvaluationController {
                            Authentication auth,
                            Model model) {
 
-        // επιβεβαιώνουμε ότι ο καθηγητής επιβλέπει τη θέση
         String username = auth.getName();
         Professor p = professorService.findByUsername(username);
         if (!positionService.findById(positionId)
@@ -57,7 +56,6 @@ public class ProfessorEvaluationController {
                          @RequestParam int guidance,
                          Authentication auth) {
 
-        // επιβεβαίωση ιδιοκτησίας όπως στο GET
         String username = auth.getName();
         Professor p = professorService.findByUsername(username);
         if (!positionService.findById(positionId)

@@ -22,15 +22,12 @@ public class CompanyEvaluationController {
         this.evaluationService = evaluationService;
     }
 
-    /** GET: φόρμα αξιολόγησης */
     @GetMapping
     public String showForm(@PathVariable("positionId") Long positionId,
                            Authentication auth,
                            Model model) {
 
-        // (προαιρετικός έλεγχος ιδιοκτησίας)
         Company c = companyService.findByUsername(auth.getName());
-        // αν δεν έχει profile, redirect
         if (c == null) {
             return "redirect:/company/me/edit";
         }
@@ -44,7 +41,6 @@ public class CompanyEvaluationController {
         return "company/company-evaluation-form";
     }
 
-    /** POST: υποβολή αξιολόγησης */
     @PostMapping
     public String submit(@PathVariable("positionId") Long positionId,
                          @RequestParam int motivation,
@@ -52,7 +48,6 @@ public class CompanyEvaluationController {
                          @RequestParam int efficiency,
                          Authentication auth) {
 
-        // (προαιρετικός έλεγχος ιδιοκτησίας)
         Company c = companyService.findByUsername(auth.getName());
         if (c == null) {
             return "redirect:/company/me/edit";

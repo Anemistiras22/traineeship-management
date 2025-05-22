@@ -41,7 +41,6 @@ public class SearchController {
         String username = auth.getName();
         Student student = studentService.findByUsername(username);
         if (student == null) {
-            // Αν δεν υπάρχει profile, πρώτα φτιάξτο
             return "redirect:/students/me/edit";
         }
 
@@ -57,7 +56,6 @@ public class SearchController {
                         Authentication auth) {
         String username = auth.getName();
         Student student = studentService.findByUsername(username);
-        // υποθέτουμε student != null εδώ
         positionService.apply(positionId, student.getId());
         return "redirect:/logbook";
     }
