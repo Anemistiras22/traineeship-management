@@ -17,7 +17,7 @@ public class CombinedStrategy implements PositionSearchStrategy {
 
     @Override
     public List<TraineeshipPosition> findMatching(Student student, List<TraineeshipPosition> positions) {
-        // Πρώτα φιλτράρουμε με το ενδιαφέρον, μετά με τοποθεσία
+
         List<TraineeshipPosition> byInterest = interestStrategy.findMatching(student, positions);
         return locationStrategy.findMatching(student, byInterest);
     }
